@@ -9,6 +9,12 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+COOKIES_FILE = os.path.join(BASE_DIR, 'cookies/amazon.cookie')
+
+
 BOT_NAME = 'amazon'
 
 SPIDER_MODULES = ['amazon.spiders']
@@ -27,7 +33,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0.1
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -65,7 +71,10 @@ DOWNLOAD_DELAY = 0.1
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'amazon.pipelines.MysqlTwistedPipeline': 300,
+   # 'amazon.pipelines.MysqlTwistedPipeline': 300,
+   'captchabuster.RobotMiddleware': 1,
+
+   # 'scrapy_redis.pipelines.RedisPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -88,6 +97,28 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# Specify the host and port to use when connecting to Redis (optional).
+# REDIS_HOST = '47.106.168.247'
+# REDIS_HOST = '127.0.0.1'
+# REDIS_PORT = 6379
+# REDIS_PASSWORD = 'zz6901877'
+
+# Specify the full Redis URL for connecting (optional).
+# If set, this takes precedence over the REDIS_HOST and REDIS_PORT settings.
+#REDIS_URL = 'redis://user:pass@hostname:9001'
+
+# Custom redis client parameters (i.e.: socket timeout, etc.)
+#REDIS_PARAMS  = {}
+
+# Don't cleanup redis queues, allows to pause/resume crawls.
+# SCHEDULER_PERSIST = True
+
+# Enables scheduling storing requests queue in redis.
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+
+# Ensure all spiders share same duplicates filter through redis.
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
 MYSQL_HOST = 'localhost'
 MYSQL_DATABASE = 'test'

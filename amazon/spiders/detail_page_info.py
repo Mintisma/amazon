@@ -1,22 +1,33 @@
 # -*- coding: utf-8 -*-
 from urllib.parse import urljoin
+import pickle
 
-import scrapy
+from scrapy import Spider
 from scrapy.http import Request
+# from scrapy_redis.spiders import RedisSpider
 
 from amazon.items import AmazonItem
+from amazon.settings import BASE_DIR, COOKIES_FILE
+from amazon.utils.get_cookie import get_browser_cookie
 
+# class detailpageinfospider(redisspider):
+class detailpageinfospider(Spider):
 
-class DetailPageInfoSpider(scrapy.Spider):
     name = 'detail_page_info'
-    allowed_domains = ['www.amazon.com']
-    start_urls = ['http://www.amazon.com/']
-    base_url = 'http://www.amazon.com/dp/'
+    # allowed_domains = ['www.amazon.com']
+    # start_urls = ['http://www.amazon.com/']
+    base_url = 'https://www.amazon.com/dp/'
+    category = 'amazon'
 
-    def __init__(self, asin, category='', **kwargs):
+    def __init__(self, asin='B07RTX288X', category='foam_pillow', **kwargs):
         self.start_urls = [self.base_url + asin, ]
         self.category = category
         super().__init__(**kwargs)
+
+    def start_requests(self):
+        # yield request with address set
+        cookie_dict = get_browser_cookie(self.start_urls[0])
+        yield Request(self.start_urls[0], dont_filter=True, cookies=cookie_dict)
 
     def parse(self, response):
         top_asin_url = response.xpath('//a[contains(@href, "gp/bestsellers")]/@href').extract()[-1]
