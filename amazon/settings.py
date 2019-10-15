@@ -33,7 +33,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 0.3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -58,9 +58,9 @@ DOWNLOAD_DELAY = 1
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'amazon.middlewares.AmazonDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'captchabuster.RobotMiddleware': 1,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -71,9 +71,7 @@ DOWNLOAD_DELAY = 1
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   # 'amazon.pipelines.MysqlTwistedPipeline': 300,
-   'captchabuster.RobotMiddleware': 1,
-
+   'amazon.pipelines.MysqlTwistedPipeline': 300,
    # 'scrapy_redis.pipelines.RedisPipeline': 300
 }
 
