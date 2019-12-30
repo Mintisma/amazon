@@ -17,3 +17,5 @@ class AmazonItem(scrapy.Item):
     title = Field()
     bullet_points = Field()
     category = Field()
+    asin = Field()
+    price = Field()
