@@ -11,7 +11,7 @@ from amazon.utils.get_cookie import get_browser_cookie
 
 class detailpageinfospider(Spider):
 
-    name = 'detail_page_info'
+    name = 'top_100_info'
     base_url = 'https://www.amazon.com/dp/'
 
     def __init__(self, asin='B07RTX288X', category='foam_pillow', **kwargs):
