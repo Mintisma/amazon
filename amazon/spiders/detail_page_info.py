@@ -10,7 +10,6 @@ from amazon.utils.get_cookie import get_browser_cookie
 
 
 class detailpageinfospider(Spider):
-
     name = 'top_100_info'
     base_url = 'https://www.amazon.com/dp/'
 

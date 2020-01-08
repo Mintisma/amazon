@@ -17,8 +17,8 @@ class InfoExtendSpider(scrapy.Spider):
     def __init__(self, search_term='foam_pillow', pages=3, category='foam_pillow', **kwargs):
         super().__init__(**kwargs)
         search_term = search_term.replace('_', '+')
-        url = self.base_url + search_term
-        urls = [url+'&page=' + str(page) for page in range(1, pages+1)]
+        url = self.base_url + search_term + '&page='
+        urls = [url + str(page) for page in range(1, pages+1)]
         self.start_urls = urls
         self.category = category
 
@@ -31,9 +31,6 @@ class InfoExtendSpider(scrapy.Spider):
         products = response.xpath('//div[contains(@class, "s-result-list")]/div[@data-asin]')
         for product in products:
             asin = product.xpath('@data-asin').extract_first('')
-            # price = product.xpath(
-            #     'div/span/div/div/div[contains(@class, "a-spacing-top-mini")]/div/span[@dir="auto" and @class="a-color-base"]/text()').extract_first(
-            #     '').replace('$', '').replace(',', '')
             price = get_search_price(product)
 
             url_extend = product.xpath('div/span/div/div/span/a[@class="a-link-normal"]/@href').extract_first('')
