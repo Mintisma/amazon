@@ -13,10 +13,11 @@ class detailpageinfospider(Spider):
     name = 'top_100_info'
     base_url = 'https://www.amazon.com/dp/'
 
-    def __init__(self, asin='B07RTX288X', category='foam_pillow', **kwargs):
+    def __init__(self, asin='B07RTX288X', category='foam_pillow', category_num=-1, **kwargs):
         self.start_urls = [self.base_url + asin, ]
         self.category = category
         super().__init__(**kwargs)
+        self.category_num = int(category_num)
 
     def start_requests(self):
         # yield request with address set
@@ -24,7 +25,7 @@ class detailpageinfospider(Spider):
         yield Request(self.start_urls[0], dont_filter=True, cookies=cookie_dict)
 
     def parse(self, response):
-        top_asin_url = response.xpath('//a[contains(@href, "gp/bestsellers")]/@href').extract()[-1]
+        top_asin_url = response.xpath('//a[contains(@href, "gp/bestsellers")]/@href').extract()[self.category_num]
         top_asin_url = urljoin(self.base_url, top_asin_url)
         yield Request(url=top_asin_url, callback=self.parse_top_asins)
 
@@ -34,11 +35,12 @@ class detailpageinfospider(Spider):
 
         price_list_temp = response.xpath('//span[@class="p13n-sc-price"]/text()').extract()
         price_list = []
-        # price_list = [float(price.replace('$', '').replace(',', '')) for price in price_list]
+        price_list_temp = [price.replace('$', '').replace(',', '') for price in price_list_temp]
         for price in price_list_temp:
-            if isinstance(price, int):
+            try:
+                price = float(price)
                 price_list.append(price)
-            else:
+            except:
                 price_list.append(float(0))
 
         for i in range(len(listing_detail_url_list)):
