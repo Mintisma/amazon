@@ -32,8 +32,14 @@ class detailpageinfospider(Spider):
         listing_detail_url_list = [urljoin(self.base_url, item) for item in response.xpath('//a[@class="a-link-normal"]/@href').extract()
                          if 'product-reviews' not in item][:-3]
 
-        price_list = response.xpath('//span[@class="p13n-sc-price"]/text()').extract()
-        price_list = [float(price.replace('$', '').replace(',', '')) for price in price_list]
+        price_list_temp = response.xpath('//span[@class="p13n-sc-price"]/text()').extract()
+        price_list = []
+        # price_list = [float(price.replace('$', '').replace(',', '')) for price in price_list]
+        for price in price_list_temp:
+            if isinstance(price, int):
+                price_list.append(price)
+            else:
+                price_list.append(float(0))
 
         for i in range(len(listing_detail_url_list)):
             listing_detail_url = listing_detail_url_list[i]
