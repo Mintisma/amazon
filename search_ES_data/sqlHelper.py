@@ -9,7 +9,8 @@ class Sqlhelper:
         self.connect()
 
     def connect(self):
-        self.conn = pymysql.connect(db['HOST'], port=3306, user=db['USER'], password=db['PASSWORD'], db=db['NAME'], charset='utf8')
+        self.conn = pymysql.connect(db['HOST'], port=3306, user=db['USER'], password=db['PASSWORD'], db=db['NAME'],
+                                    charset='utf8')
         self.cursor = self.conn.cursor(cursor=pymysql.cursors.DictCursor)
 
     def get_list(self, sql, args):
@@ -27,6 +28,8 @@ class Sqlhelper:
             self.cursor.execute(sql, args)
             self.conn.commit()
         except pymysql.err.InternalError as e:
+            print(e)
+        except pymysql.err.OperationalError as e:
             print(e)
         return self.cursor.lastrowid
 
