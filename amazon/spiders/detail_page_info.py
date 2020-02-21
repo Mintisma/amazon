@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from urllib.parse import urljoin
-import pickle
 
 from scrapy import Spider
 from scrapy.http import Request
@@ -13,7 +12,7 @@ class detailpageinfospider(Spider):
     name = 'top_100_info'
     base_url = 'https://www.amazon.com/dp/'
 
-    def __init__(self, asin='B07RTX288X', category='foam_pillow', category_num=-1, **kwargs):
+    def __init__(self, asin='B01N5LFV4X', category='mattress_pad', category_num=-1, **kwargs):
         self.start_urls = [self.base_url + asin, ]
         self.category = category
         super().__init__(**kwargs)

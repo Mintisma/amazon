@@ -1,3 +1,6 @@
 scrapy-amazon-robot-middleware3
 scrapy
 selenium
+aiohttp
+requests
+pymysql

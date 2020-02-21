@@ -14,7 +14,7 @@ class InfoExtendSpider(scrapy.Spider):
     base_url = 'https://www.amazon.com/s?k='
     allowed_domains = ['www.amazon.com']
 
-    def __init__(self, search_term='foam_pillow', pages=3, category='foam_pillow', **kwargs):
+    def __init__(self, search_term='king_mattress_pad', pages=3, category='king_mattress_pad', **kwargs):
         super().__init__(**kwargs)
         search_term = search_term.replace('_', '+')
         url = self.base_url + search_term + '&page='
