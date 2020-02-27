@@ -26,6 +26,7 @@ def get_product_data(category, query, pages):
     start_time = time.time()
     asin_list = al.get_asin_list(query, pages)
     print('amazon scraping costs {} seconds'.format(int(time.time()-start_time)))
+    print('length of asin_list: {}'.format(len(asin_list)))
     print('asin_list: ', asin_list[0], asin_list[1])
 
     start_time = time.time()

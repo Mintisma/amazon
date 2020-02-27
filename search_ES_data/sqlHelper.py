@@ -31,6 +31,8 @@ class Sqlhelper:
             print(e)
         except pymysql.err.OperationalError as e:
             print(e)
+        except pymysql.err.InterfaceError as e:
+            print(e)
         return self.cursor.lastrowid
 
     def modify_many(self, sql, args):

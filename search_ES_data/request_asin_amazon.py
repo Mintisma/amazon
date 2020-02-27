@@ -1,3 +1,5 @@
+import time
+
 import requests
 from scrapy.selector import Selector
 
@@ -7,9 +9,18 @@ class AsinList:
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
     asin_list = []
+    s = requests.session()
 
     def asin_list_page(self, url):
-        r = requests.get(url, headers=self.headers)
+        time.sleep(1) # sleep for 1 second to avoid banned by amazon
+        # http_proxy = "http://34.217.69.170:9999"
+        # https_proxy = "https://34.217.69.170:9999"
+        #
+        # proxyDict = {
+        #     "http": http_proxy,
+        #     "https": https_proxy,
+        # }
+        r = self.s.get(url, headers=self.headers)
         selector = Selector(text=r.text)
         href_list = selector.xpath('//div/h2/a[@class="a-link-normal a-text-normal"]/@href').extract()
         asin_list = [href.split('/')[3] for href in href_list if not href.startswith('/gp/')]

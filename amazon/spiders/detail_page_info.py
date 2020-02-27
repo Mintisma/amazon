@@ -12,7 +12,7 @@ class detailpageinfospider(Spider):
     name = 'top_100_info'
     base_url = 'https://www.amazon.com/dp/'
 
-    def __init__(self, asin='B01N5LFV4X', category='mattress_pad', category_num=-1, **kwargs):
+    def __init__(self, asin='B00131SZ6G', category='tactical_knife', category_num=-1, **kwargs):
         self.start_urls = [self.base_url + asin, ]
         self.category = category
         super().__init__(**kwargs)

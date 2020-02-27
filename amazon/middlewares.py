@@ -6,7 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-
+from tools.crawl_xici_ip import GetIP
 
 class AmazonSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -101,3 +101,13 @@ class AmazonDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class RandomProxyMiddleware:
+    def process_request(self, request, spider):
+        # get_ip = GetIP()
+        # proxy = get_ip.get_random_ip()
+        # print(proxy)
+        # request.meta['proxy'] = get_ip.get_random_ip()
+        request.meta['proxy'] = 'http://171.38.38.246:8123'
+        return request

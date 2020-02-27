@@ -1,3 +1,4 @@
+import time
 import hashlib
 from datetime import datetime
 
@@ -31,7 +32,7 @@ def request_data(asin):
     try:
         result_dict['data'][0]
     except IndexError as e:
-        result_dict['data'].append({'title': '', 's_about': '', 'price': 0})
+        result_dict['data'].append({'asin': asin, 'title': '', 's_about': '', 'price': '', 'rating': '', 'reviews': 0})
 
     result_dict = result_dict['data'][0]
 
@@ -39,11 +40,14 @@ def request_data(asin):
     try:
         insert_dict['asin'] = result_dict['asin']
         insert_dict['title'] = result_dict['title']
+        insert_dict['price'] = result_dict['price']
+        insert_dict['rating'] = result_dict['rating']
+        insert_dict['reviews'] = result_dict['reviews']
         bullet_points = result_dict['s_about']
         bullet_point_list = [bullet_point.strip() for bullet_point in bullet_points if len(bullet_point.strip()) > 0]
         bullet_points = ' '.join(bullet_point_list)
         insert_dict['bullet_points'] = bullet_points
-        insert_dict['price'] = result_dict['price']
+
     except KeyError as e:
         print('ES data missed')
         print(e)

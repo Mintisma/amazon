@@ -59,7 +59,8 @@ DOWNLOAD_DELAY = 0.3
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   'captchabuster.RobotMiddleware': 1,
+   'captchabuster.RobotMiddleware': 10,
+   # 'amazon.middlewares.RandomProxyMiddleware': 2,
 }
 
 # Enable or disable extensions
