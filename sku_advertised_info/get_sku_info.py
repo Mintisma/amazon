@@ -5,8 +5,12 @@ from scrapy import Selector
 from selenium import webdriver
 
 from sqlHelper import Sqlhelper
+from request_attributes_ES import request_data
 
-headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+    'Referer': "www.google.com",
+}
 
 sqlHelper = Sqlhelper()
 base_url = 'https://www.amazon.com/dp/'
@@ -33,6 +37,10 @@ def get_asin_data(asin):
         'bullet_points': bullet_points,
         'asin': asin,
     }
+    insert_data(data)
+
+
+def insert_data(data):
     keys = ', '.join(data.keys())
     values = ', '.join(['%s'] * len(data))
     # 插入数据库
@@ -44,7 +52,12 @@ def get_asin_data(asin):
     sqlHelper.close()
 
 
+def main(asin):
+    insert_dict = request_data(asin)
+    insert_data(insert_dict)
+
+
 if __name__ == '__main__':
     asin = input('please input the ASIN you want to advertise \n')
-    get_asin_data(asin)
-
+    # get_asin_data(asin)
+    main(asin)
