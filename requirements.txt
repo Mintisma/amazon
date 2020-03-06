@@ -3,4 +3,4 @@ scrapy
 selenium
 aiohttp
 requests
-pymysql'
+pymysql
