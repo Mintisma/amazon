@@ -23,7 +23,7 @@ def request_data(asin):
     query_list = [k + '=' + str(v) for k, v in params.items()]
     query_string = '&'.join(query_list)
 
-    url = "https://beta.sellermotor.com/selection/index/big-data" + '?' + query_string
+    url = "https://xp.sellermotor.com/selection/index/big-data" + '?' + query_string
 
     # request & get result dict
     res = requests.get(url)
