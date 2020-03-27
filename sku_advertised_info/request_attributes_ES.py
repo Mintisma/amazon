@@ -14,27 +14,44 @@ def request_data(asin):
         raise ValueError('asin should be of string format')
 
     # get query url
-    time_param = int(datetime.now().timestamp())
-    sign_str = 'sm5a70d9b0174909d3cdb1' + str(time_param) + '4b2ede6b-a5f5-3cd9-8c25-e086a14f92ef'
-    sign = hashlib.md5(sign_str.encode()).hexdigest()
-    params = {'sign': sign, 'timestamp': time_param, 'aid': 'sm5a70d9b0174909d3cdb1', 'asin': asin,
-              'countryCode': 'us'}
+    # time_param = int(datetime.now().timestamp())
+    # sign_str = 'sm5a70d9b0174909d3cdb1' + str(time_param) + '4b2ede6b-a5f5-3cd9-8c25-e086a14f92ef'
+    # sign = hashlib.md5(sign_str.encode()).hexdigest()
+    # params = {'sign': sign, 'timestamp': time_param, 'aid': 'sm5a70d9b0174909d3cdb1', 'asin': asin,
+    #           'countryCode': 'us'}
+    #
+    # query_list = [k + '=' + str(v) for k, v in params.items()]
+    # query_string = '&'.join(query_list)
+    #
+    # url = "https://xp.sellermotor.com/selection/index/big-data" + '?' + query_string
 
-    query_list = [k + '=' + str(v) for k, v in params.items()]
-    query_string = '&'.join(query_list)
-
-    url = "https://xp.sellermotor.com/selection/index/big-data" + '?' + query_string
+    # 挚哥的API
+    headers = {
+        'Authorization': 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJhdWQiOiJzbWRhdGEiLCJyb2xlIjoiMyIsImV4cCI6MTU4NTcxMTkxMiwidXNlcmlkIjoiMSIsInVzZXJuYW1lIjoiYWR2ZXJ0In0.AgRelbGBprlvqpUq1XcDPmSzLqxQHRehE50_MDrKt0Y'
+    }
+    url = 'http://44.232.246.239:8088/data/product/byAsin?site=1&asin={asin}'.format(asin=asin)
 
     # request & get result dict
-    res = requests.get(url)
+    res = requests.get(url, headers=headers)
+    # request & get result dict
+    # res = requests.get(url)
 
     result_dict = res.json()
-    try:
-        result_dict['data'][0]
-    except IndexError as e:
-        result_dict['data'].append({'asin': asin, 'title': '', 's_about': '', 'price': '', 'rating': '', 'reviews': 0})
+    # try:
+    #     result_dict['data'][0]
+    # except IndexError as e:
+    #     result_dict['data'].append({'asin': asin, 'title': '', 's_about': '', 'price': '', 'rating': '', 'reviews': 0})
 
-    result_dict = result_dict['data'][0]
+    if not result_dict['data']:
+        result_dict['data'] = dict()
+        result_dict['data']['asin'] = asin
+        result_dict['data']['title'] = ''
+        result_dict['data']['s_about'] = ''
+        result_dict['data']['price'] = ''
+        result_dict['data']['rating'] = ''
+        result_dict['data']['reviews'] = 0
+
+    result_dict = result_dict['data']
 
     insert_dict = dict()
     try:

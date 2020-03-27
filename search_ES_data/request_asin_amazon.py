@@ -3,6 +3,8 @@ import time
 import requests
 from scrapy.selector import Selector
 
+from settings import proxies
+
 
 class AsinList:
     base_url = 'https://www.amazon.com/s?k='
@@ -21,6 +23,7 @@ class AsinList:
         self.headers['Referer'] = previews_url.encode()
 
         r = self.s.get(url, headers=self.headers)
+        # print('proxies: {}'.format(proxies))
         r.encoding = 'utf8'
         selector = Selector(text=r.text)
         href_list = selector.xpath('//div/h2/a[@class="a-link-normal a-text-normal"]/@href').extract()
@@ -39,6 +42,7 @@ class AsinList:
         url_list = [self.base_url + query for query in query_list]
         for url in url_list:
             asin_list_page = self.asin_list_page(url)
+            asin_list_page = [asin for asin in asin_list_page if asin is not None]
             self.asin_list.extend(asin_list_page)
         return self.asin_list
 

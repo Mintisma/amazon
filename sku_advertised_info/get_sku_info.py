@@ -47,8 +47,11 @@ def insert_data(data):
     insert_sql = 'INSERT INTO {table} ({keys}) VALUES ({values}) ON DUPLICATE KEY UPDATE'.format(table=TABLE, keys=keys, values=values)
     update = ','.join([" {key}=VALUES ({key})".format(key=key) for key in list(data.keys())])
     insert_sql += update
+    try:
+        sqlHelper.modify(insert_sql, args=tuple(data.values(), ))
+    except Exception as e:
+        print(e, '\n', data)
 
-    sqlHelper.modify(insert_sql, args=tuple(data.values(), ))
     sqlHelper.close()
 
 
