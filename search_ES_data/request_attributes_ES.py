@@ -28,7 +28,8 @@ def request_data(asin):
     headers = {
         'Authorization': 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJhdWQiOiJzbWRhdGEiLCJyb2xlIjoiMyIsImV4cCI6MTU4NTcxMTkxMiwidXNlcmlkIjoiMSIsInVzZXJuYW1lIjoiYWR2ZXJ0In0.AgRelbGBprlvqpUq1XcDPmSzLqxQHRehE50_MDrKt0Y'
     }
-    url = 'http://44.232.246.239:8088/data/product/byAsin?site=1&asin={asin}'.format(asin=asin)
+    # url = 'http://44.232.246.239:8088/data/product/byAsin?site=1&asin={asin}'.format(asin=asin)
+    url = 'http://52.82.24.19:8181/usdata/product/byAsin?site=1&asin={asin}'.format(asin=asin)
 
     # request & get result dict
     res = requests.get(url, headers=headers)
