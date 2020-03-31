@@ -55,12 +55,14 @@ def insert_data(data):
     sqlHelper.close()
 
 
-def main(asin):
+def main(asin, product_name):
     insert_dict = request_data(asin)
+    insert_dict['product_name'] = product_name
     insert_data(insert_dict)
 
 
 if __name__ == '__main__':
     asin = input('please input the ASIN you want to advertise \n')
+    product_name = input('please input the product_name the ASIN is \n')
     # get_asin_data(asin)
-    main(asin)
+    main(asin, product_name)
