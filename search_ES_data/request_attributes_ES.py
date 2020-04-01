@@ -26,7 +26,7 @@ def request_data(asin):
     # url = "https://xp.sellermotor.com/selection/index/big-data" + '?' + query_string
     # 挚哥的API
     headers = {
-        'Authorization': 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJhdWQiOiJzbWRhdGEiLCJyb2xlIjoiMyIsImV4cCI6MTU4NjIyMTg4NCwidXNlcmlkIjoiMSIsInVzZXJuYW1lIjoiYWR2ZXJ0In0._bk7Dy90AzyHTHwIAqGfF_LMFm_mvSK1Wvs6nizVUck'
+        'Authorization': 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJhdWQiOiJzbWRhdGEiLCJyb2xlIjoiMyIsImV4cCI6MTY3MjEzMzA4NCwidXNlcmlkIjoiMSIsInVzZXJuYW1lIjoiYWR2ZXJ0In0.kGjVZjatFkbdbScJn_LF87OD806CeRwAI4i27YxvgQ8'
     }
     # url = 'http://44.232.246.239:8088/data/product/byAsin?site=1&asin={asin}'.format(asin=asin)
     url = 'http://52.82.24.19:8181/usdata/product/byAsin?site=1&asin={asin}'.format(asin=asin)
