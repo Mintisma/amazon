@@ -56,8 +56,11 @@ def request_data(asin):
         insert_dict['rating'] = result_dict['rating']
         insert_dict['reviews'] = result_dict['reviews']
         bullet_points = result_dict['s_about']
-        bullet_point_list = [bullet_point.strip() for bullet_point in bullet_points if len(bullet_point.strip()) > 0]
-        bullet_points = ' '.join(bullet_point_list)
+        if bullet_points:
+            bullet_point_list = [bullet_point.strip() for bullet_point in bullet_points if len(bullet_point.strip()) > 0]
+            bullet_points = ' '.join(bullet_point_list)
+        else:
+            bullet_points = []
         insert_dict['bullet_points'] = bullet_points
 
     except KeyError as e:
