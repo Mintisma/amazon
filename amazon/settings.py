@@ -60,7 +60,7 @@ COOKIES_ENABLED = True
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'captchabuster.RobotMiddleware': 10,
-   'amazon.middlewares.QidUpdate': 100,
+   # 'amazon.middlewares.QidUpdate': 100,
    # 'amazon.middlewares.RandomProxyMiddleware': 2,
 }
 
