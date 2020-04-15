@@ -20,7 +20,7 @@ chrome_options.add_argument("--no-sandbox")
 def get_browser_cookie(start_url='https://www.amazon.com/'):
     if not os.path.exists(COOKIES_FILE):
         browser = webdriver.Chrome(executable_path='/Users/ted/Desktop/chromedriver')
-        wait = WebDriverWait(browser, 10)
+        wait = WebDriverWait(browser, 30)
         browser.get(start_url)
 
         # change address

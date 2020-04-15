@@ -23,7 +23,6 @@ class AsinList:
         self.headers['Referer'] = previews_url.encode()
 
         r = self.s.get(url, headers=self.headers)
-        # print('proxies: {}'.format(proxies))
         r.encoding = 'utf8'
         selector = Selector(text=r.text)
         href_list = selector.xpath('//div/h2/a[@class="a-link-normal a-text-normal"]/@href').extract()
@@ -47,7 +46,8 @@ class AsinList:
         return self.asin_list
 
     def get_cookie(self):
-        self.s.get(self.amazon_url, headers=self.headers)
+        r = self.s.get(self.amazon_url, headers=self.headers)
+        return r
 
     def get_previews_url(self, url):
         page = url[-1]

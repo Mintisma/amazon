@@ -7,6 +7,7 @@
 
 from scrapy import signals
 from tools.crawl_xici_ip import GetIP
+from amazon.utils.func_xpath import refresh_url_qid
 
 class AmazonSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -110,4 +111,10 @@ class RandomProxyMiddleware:
         # print(proxy)
         # request.meta['proxy'] = get_ip.get_random_ip()
         request.meta['proxy'] = 'http://171.38.38.246:8123'
+        return request
+
+
+class QidUpdate:
+    def process_request(self, request, spider):
+        request.url = refresh_url_qid(request.url)
         return request

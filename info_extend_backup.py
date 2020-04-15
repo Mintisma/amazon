@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 from urllib.parse import urljoin
-from time import time
 
 import scrapy
 from scrapy.http import Request
 
 from amazon.items import AmazonItem
 from amazon.utils.get_cookie import get_browser_cookie
-from amazon.utils.func_xpath import get_search_price, get_detail_rating, get_detail_reviews, get_detail_url
-from amazon.utils.func import get_url
+from amazon.utils.func_xpath import get_search_price
 
 
 class InfoExtendSpider(scrapy.Spider):
@@ -20,12 +18,9 @@ class InfoExtendSpider(scrapy.Spider):
 
     def __init__(self, search_term='king_waterproof_mattress_pad', pages=3, category='king_waterproof_mattress_pad', **kwargs):
         super().__init__(**kwargs)
-        # search_term = search_term.replace('_', '+')
-        # url = self.base_url + search_term + '&page='
-        # urls = [url + str(page) + '&qid=' + str(round(time())) + '&ref=sr_pg_' + str(page) for page in range(1, pages+1)]
-
-        # 模拟签名，伪造search_url
-        urls = [get_url(search_term, page) for page in range(1, pages+1)]
+        search_term = search_term.replace('_', '+')
+        url = self.base_url + search_term + '&page='
+        urls = [url + str(page) for page in range(1, pages+1)]
         self.start_urls = urls
         self.category = category
 
@@ -39,8 +34,10 @@ class InfoExtendSpider(scrapy.Spider):
         for product in products:
             asin = product.xpath('@data-asin').extract_first('')
             price = get_search_price(product)
-            url = get_detail_url(product)
 
+            url_extend = product.xpath('div/span/div/div/span/a[@class="a-link-normal"]/@href').extract_first('')
+            url_extend = '/'.join(url_extend.split('/')[:-1])
+            url = urljoin(self.base_url, url_extend)
             yield Request(url, meta={'asin': asin, "price": price}, callback=self.parse_detail_page)
 
     def parse_detail_page(self, response):
@@ -52,9 +49,6 @@ class InfoExtendSpider(scrapy.Spider):
         bullet_point_list = [bullet_point.strip() for bullet_point in bullet_points if len(bullet_point.strip()) > 0]
         bullet_points = ' '.join(bullet_point_list)
 
-        rating = get_detail_rating(response)
-        reviews = get_detail_reviews(response)
-
         price = response.meta.get('price', 0)
         asin = response.meta.get('asin', '')
 
@@ -63,7 +57,5 @@ class InfoExtendSpider(scrapy.Spider):
         amazon_item['category'] = self.category
         amazon_item['price'] = price
         amazon_item['asin'] = asin
-        amazon_item['rating'] = rating
-        amazon_item['reviews'] = reviews
 
         yield amazon_item
