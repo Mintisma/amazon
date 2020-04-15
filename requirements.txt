@@ -4,3 +4,4 @@ selenium
 aiohttp
 requests
 pymysql
+fake-useragent

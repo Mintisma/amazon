@@ -6,7 +6,6 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-from tools.crawl_xici_ip import GetIP
 from amazon.utils.func_xpath import refresh_url_qid
 
 class AmazonSpiderMiddleware(object):
