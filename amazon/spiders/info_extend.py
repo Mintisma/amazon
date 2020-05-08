@@ -48,7 +48,7 @@ class InfoExtendSpider(scrapy.Spider):
 
         title = response.xpath('//span[@id="productTitle"]/text()').extract_first('').strip()
 
-        bullet_points = response.xpath('//span[@class="a-list-item"]/text()').extract()
+        bullet_points = response.xpath('//div[@id="feature-bullets"]/ul/li/span[@class="a-list-item"]/text()').extract()
         bullet_point_list = [bullet_point.strip() for bullet_point in bullet_points if len(bullet_point.strip()) > 0]
         bullet_points = ' '.join(bullet_point_list)
 
