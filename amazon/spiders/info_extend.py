@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from urllib.parse import urljoin
-from time import time
+from datetime import datetime
 
 import scrapy
 from scrapy.http import Request
@@ -65,5 +65,6 @@ class InfoExtendSpider(scrapy.Spider):
         amazon_item['asin'] = asin
         amazon_item['rating'] = rating
         amazon_item['reviews'] = reviews
+        amazon_item['date'] = datetime.now().date()
 
         yield amazon_item
