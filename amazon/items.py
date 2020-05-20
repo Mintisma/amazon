@@ -21,3 +21,4 @@ class AmazonItem(scrapy.Item):
     price = Field()
     rating = Field()
     reviews = Field()
+    date = Field()
