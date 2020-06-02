@@ -25,7 +25,7 @@ class InfoExtendSpider(scrapy.Spider):
         # urls = [url + str(page) + '&qid=' + str(round(time())) + '&ref=sr_pg_' + str(page) for page in range(1, pages+1)]
 
         # 模拟签名，伪造search_url
-        urls = [get_url(search_term, page) for page in range(1, pages+1)]
+        urls = [get_url(search_term, page) for page in range(1, int(pages)+1)]
         self.start_urls = urls
         self.category = category
 
