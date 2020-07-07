@@ -12,7 +12,8 @@
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-COOKIES_FILE = os.path.join(BASE_DIR, 'cookies/amazon.cookie')
+# COOKIES_FILE = os.path.join(BASE_DIR, 'cookies/amazon.cookie')
+
 
 
 BOT_NAME = 'amazon'
@@ -127,3 +128,16 @@ MYSQL_PORT = 3306
 MYSQL_USER = 'root'
 # MYSQL_PASSWORD = 'zz6901877'
 MYSQL_PASSWORD = 'sellermotor'
+
+
+country_query_url_dict = {'us': 'https://www.amazon.com/s?', 'uk': 'https://www.amazon.co.uk/s?', 'de': 'https://www.amazon.de/s?',
+               'fr': 'https://www.amazon.fr/s?'}
+
+country_url_dict = {'us': 'https://www.amazon.com/', 'uk': 'https://www.amazon.co.uk/', 'de': 'https://www.amazon.de/',
+               'fr': 'https://www.amazon.fr/'}
+
+COOKIES_FILE_DICT = {'us': os.path.join(BASE_DIR, 'cookies/amazon.cookie'),
+                     'de': os.path.join(BASE_DIR, 'cookies/amazon_de.cookie'),
+                     'fr': os.path.join(BASE_DIR, 'cookies/amazon_fr.cookie'),
+                     'uk': os.path.join(BASE_DIR, 'cookies/amazon_uk.cookie'),
+                     }

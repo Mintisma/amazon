@@ -22,3 +22,4 @@ class AmazonItem(scrapy.Item):
     rating = Field()
     reviews = Field()
     date = Field()
+    country = Field()

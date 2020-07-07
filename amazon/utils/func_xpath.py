@@ -1,6 +1,8 @@
 from urllib.parse import urljoin
 from time import time
 
+from amazon.settings import country_query_url_dict
+
 
 def refresh_url_qid(url):
     if 'qid' in url:
@@ -25,25 +27,25 @@ def get_price(response):
     return 0
 
 
-def get_search_price(product):
-    try:
-        price = float(product.xpath('div/span/div/div/div[contains(@class, "a-spacing-top-mini")]/div/span[@dir="auto" and @class="a-color-base"]/text()').extract_first('').replace('$', '').replace(',', ''))
-    except:
-        try:
-            price_raw = product.xpath('div/span/div/div/div[@class="a-section a-spacing-none a-spacing-top-small"]')[-1]
-            price = float(price_raw.xpath('div/div/a/span/span[@class="a-offscreen"]/text()').extract_first('').replace('$', '').replace(',', ''))
-        except:
-            try:
-                price = float(product.xpath('.//span[@class="a-price-whole"]/text()').extract_first().replace(',','') + '.' + product.xpath('.//span[@class="a-price-fraction"]/text()').extract_first())
-            except:
-                price = 0
+def get_search_price(product, country):
+    if country == 'us':
+        price = get_us_price(product)
+    elif country == 'de':
+        price = get_de_price(product)
+    elif country == 'fr':
+        price = get_fr_price(product)
+    elif country == 'uk':
+        price = get_uk_price(product)
+    else:
+        raise KeyError('country should be one of us, de, fr, uk')
+
     return price
 
 
 def get_detail_rating(response):
     try:
         rating = response.xpath('//span[@id="acrPopover"]/span/a/i/span/text()').extract_first(0)
-        rating = float(rating.split()[0])
+        rating = float(rating.split()[0].replace(',', '.'))
     except:
         rating = 0
     return rating
@@ -58,8 +60,10 @@ def get_detail_reviews(response):
     return reviews
 
 
-def get_detail_url(product):
-    base_url = 'https://www.amazon.com/s?k='
+def get_detail_url(product, country):
+
+    base_url = country_query_url_dict[country]
+    # base_url = 'https://www.amazon.com/s?k='
 
     url_extend = product.xpath('div/span/div/div/span/a[@class="a-link-normal"]/@href').extract_first('')
     if url_extend:
@@ -72,4 +76,66 @@ def get_detail_url(product):
     return url
 
 
+def get_us_price(product):
+    try:
+        price = float(product.xpath('div/span/div/div/div[contains(@class, "a-spacing-top-mini")]/div/span[@dir="auto" and @class="a-color-base"]/text()').extract_first('').replace('$', '').replace(',', '').replace('€', ''))
+    except:
+        try:
+            price_raw = product.xpath('div/span/div/div/div[@class="a-section a-spacing-none a-spacing-top-small"]')[-1]
+            price = float(price_raw.xpath('div/div/a/span/span[@class="a-offscreen"]/text()').extract_first('').replace('$', '').replace(',', ''))
+        except:
+            try:
+                price = float(product.xpath('.//span[@class="a-price-whole"]/text()').extract_first().replace(',', '') + '.' + product.xpath('.//span[@class="a-price-fraction"]/text()').extract_first())
+            except:
+                price = 0
+
+    return price
+
+
+def get_de_price(product):
+    try:
+        price = float(product.xpath('.//span[@class="a-price-whole"]/text()').extract_first().replace(',', '.').replace('.', ''))
+    except:
+        try:
+            price = float(product.xpath('div/span/div/div/div[contains(@class, "a-spacing-top-mini")]/div/span[@dir="auto" and @class="a-color-base"]/text()').extract_first('').replace(',', '.').replace('.', '').replace('€', ''))
+        except:
+            try:
+                price_raw = product.xpath('div/span/div/div/div[@class="a-section a-spacing-none a-spacing-top-small"]')[-1]
+                price = float(price_raw.xpath('div/div/a/span/span[@class="a-offscreen"]/text()').extract_first('').replace('€', '').replace(',', '.').replace('.', ''))
+            except:
+                price = 0
+
+    return price
+
+
+def get_fr_price(product):
+    try:
+        price = float(product.xpath('.//span[@class="a-price-whole"]/text()').extract_first().replace(' ', '').replace(',', '.'))
+    except:
+        try:
+            price = float(product.xpath('div/span/div/div/div[contains(@class, "a-spacing-top-mini")]/div/span[@dir="auto" and @class="a-color-base"]/text()').extract_first('').replace(' ', '').replace(',', '.').replace('€', ''))
+        except:
+            try:
+                price_raw = product.xpath('div/span/div/div/div[@class="a-section a-spacing-none a-spacing-top-small"]')[-1]
+                price = float(price_raw.xpath('div/div/a/span/span[@class="a-offscreen"]/text()').extract_first('').replace('€', '').replace(' ', '').replace(',', '.'))
+            except:
+                price = 0
+
+    return price
+
+
+def get_uk_price(product):
+    try:
+        price = float(product.xpath('.//span[@class="a-price-whole"]/text()').extract_first().replace(',', '') + '.' + product.xpath('.//span[@class="a-price-fraction"]/text()').extract_first())
+    except:
+        try:
+            price = float(product.xpath('div/span/div/div/div[contains(@class, "a-spacing-top-mini")]/div/span[@dir="auto" and @class="a-color-base"]/text()').extract_first('').replace(',', '').replace('£', ''))
+        except:
+            try:
+                price_raw = product.xpath('div/span/div/div/div[@class="a-section a-spacing-none a-spacing-top-small"]')[-1]
+                price = float(price_raw.xpath('div/div/a/span/span[@class="a-offscreen"]/text()').extract_first('').replace('€', '').replace(',', '.'))
+            except:
+                price = 0
+
+    return price
 

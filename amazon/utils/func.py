@@ -1,10 +1,12 @@
 from time import time
 from random import randint
 
+from amazon.settings import country_query_url_dict
 
-def get_url(query, page):
+
+def get_url(country, query, page):
     query = query.replace(' ', '+').replace('_', '+')
-    url = 'https://www.amazon.com/s?'
+    url = country_query_url_dict[country]
 
     if randint(0, 1):
         # i

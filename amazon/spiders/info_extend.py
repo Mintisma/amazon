@@ -14,23 +14,24 @@ from amazon.utils.func import get_url
 class InfoExtendSpider(scrapy.Spider):
     name = 'search_info'
 
-    amazon_url = 'https://www.amazon.com/'
-    base_url = 'https://www.amazon.com/s?k='
-    allowed_domains = ['www.amazon.com']
+    # amazon_url = 'https://www.amazon.com/'
+    # base_url = 'https://www.amazon.com/s?k='
+    # allowed_domains = ['www.amazon.com']
 
-    def __init__(self, search_term='king_waterproof_mattress_pad', pages=3, category='king_waterproof_mattress_pad', **kwargs):
+    def __init__(self, country='us', search_term='king_waterproof_mattress_pad', pages=3, category='king_waterproof_mattress_pad', **kwargs):
         super().__init__(**kwargs)
         # search_term = search_term.replace('_', '+')
         # url = self.base_url + search_term + '&page='
         # urls = [url + str(page) + '&qid=' + str(round(time())) + '&ref=sr_pg_' + str(page) for page in range(1, pages+1)]
 
         # 模拟签名，伪造search_url
-        urls = [get_url(search_term, page) for page in range(1, int(pages)+1)]
+        urls = [get_url(country, search_term, page) for page in range(1, int(pages)+1)]
         self.start_urls = urls
         self.category = category
+        self.country = country
 
     def start_requests(self):
-        cookie_dict = get_browser_cookie(self.start_urls[0])
+        cookie_dict = get_browser_cookie(self.country, self.start_urls[0])
         for url in self.start_urls:
             yield Request(url , dont_filter=True, cookies=cookie_dict)
 
@@ -38,8 +39,8 @@ class InfoExtendSpider(scrapy.Spider):
         products = response.xpath('//div[contains(@class, "s-result-list")]/div[@data-asin]')
         for product in products:
             asin = product.xpath('@data-asin').extract_first('')
-            price = get_search_price(product)
-            url = get_detail_url(product)
+            price = get_search_price(product, self.country)
+            url = get_detail_url(product, self.country)
 
             yield Request(url, meta={'asin': asin, "price": price}, callback=self.parse_detail_page)
 
@@ -66,5 +67,6 @@ class InfoExtendSpider(scrapy.Spider):
         amazon_item['rating'] = rating
         amazon_item['reviews'] = reviews
         amazon_item['date'] = datetime.now().date()
+        amazon_item['country'] = self.country
 
         yield amazon_item
