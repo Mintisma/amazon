@@ -10,3 +10,5 @@ db = {
     'PASSWORD': 'sellermotor',
     'NAME': 'test',
 }
+
+available_country_list = ['us', 'uk', 'de', 'fr']

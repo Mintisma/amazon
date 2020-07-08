@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 
 
-def request_data(asin):
+def request_data(asin, country='us'):
     """
     :param asin: asin we want to get info;
     :return:
@@ -30,9 +30,13 @@ def request_data(asin):
         'Authorization': 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJhdWQiOiJzbWRhdGEiLCJyb2xlIjoiMyIsImV4cCI6MTY3MjEzMzA4NCwidXNlcmlkIjoiMSIsInVzZXJuYW1lIjoiYWR2ZXJ0In0.kGjVZjatFkbdbScJn_LF87OD806CeRwAI4i27YxvgQ8'
     }
     # url = 'http://44.232.246.239:8088/data/product/byAsin?site=1&asin={asin}'.format(asin=asin)
-    url = 'http://52.82.24.19:8181/usdata/product/byAsin?site=1&asin={asin}'.format(asin=asin)
+    url_dict = {
+        'us': 'http://52.82.24.19:8181/usdata/product/byAsin?site=1&asin={asin}'.format(asin=asin)
+    }
+    # url = 'http://52.82.24.19:8181/usdata/product/byAsin?site=1&asin={asin}'.format(asin=asin)
 
     # request & get result dict
+    url = url_dict[country]
     res = requests.get(url, headers=headers)
     # request & get result dict
     # res = requests.get(url)
@@ -65,6 +69,7 @@ def request_data(asin):
         bullet_point_list = [bullet_point.strip() for bullet_point in bullet_points if len(bullet_point.strip()) > 0]
         bullet_points = ' '.join(bullet_point_list)
         insert_dict['bullet_points'] = bullet_points
+        insert_dict['country'] = country
 
     except KeyError as e:
         print('ES data missed')

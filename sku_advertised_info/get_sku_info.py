@@ -6,6 +6,7 @@ from selenium import webdriver
 
 from sqlHelper import Sqlhelper
 from request_attributes_ES import request_data
+from sku_advertised_info.settings import available_country_list
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
@@ -55,14 +56,23 @@ def insert_data(data):
     sqlHelper.close()
 
 
-def main(asin, product_name):
-    insert_dict = request_data(asin)
+def main(asin, product_name, country):
+    country = get_country(country)
+    insert_dict = request_data(asin, country)
     insert_dict['product_name'] = product_name
     insert_data(insert_dict)
+
+
+def get_country(country):
+    if not country in available_country_list:
+        raise KeyError('your input country is {country}, which is not currently available'.format(country=country))
+    else:
+        return country
 
 
 if __name__ == '__main__':
     asin = input('please input the ASIN you want to advertise \n')
     product_name = input('please input the product_name the ASIN is \n')
+    country = input('please input the country \n')
     # get_asin_data(asin)
-    main(asin, product_name)
+    main(asin, product_name, country)
