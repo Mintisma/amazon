@@ -36,7 +36,7 @@ class InfoExtendSpider(scrapy.Spider):
             yield Request(url , dont_filter=True, cookies=cookie_dict)
 
     def parse(self, response):
-        products = response.xpath('//div[contains(@class, "s-result-list")]/div[@data-asin]')
+        products = response.xpath('//div[contains(@class, "s-result-list")]/div[@data-asin != ""]')
         for product in products:
             asin = product.xpath('@data-asin').extract_first('')
             price = get_search_price(product, self.country)

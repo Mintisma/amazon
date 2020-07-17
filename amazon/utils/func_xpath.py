@@ -71,8 +71,15 @@ def get_detail_url(product, country):
     else:
         url_extend = product.xpath('div/span/div/div/div[2]/div/div/div/span/a/@href').extract_first('')
 
-    url = urljoin(base_url, url_extend)
-    url = refresh_url_qid(url)
+    if url_extend:
+        url = urljoin(base_url, url_extend)
+        url = refresh_url_qid(url)
+    # 如果前2步还是没抓到，就自己拼接
+    else:
+        asin = product.xpath('@data-asin').extract_first('')
+        url_extend = '/dp/' + asin + '/'
+        url = urljoin(base_url, url_extend)
+
     return url
 
 
