@@ -13,39 +13,22 @@ def request_data(asin, country='us'):
     if not isinstance(asin, str):
         raise ValueError('asin should be of string format')
 
-    # get query url
-    # time_param = int(datetime.now().timestamp())
-    # sign_str = 'sm5a70d9b0174909d3cdb1' + str(time_param) + '4b2ede6b-a5f5-3cd9-8c25-e086a14f92ef'
-    # sign = hashlib.md5(sign_str.encode()).hexdigest()
-    # params = {'sign': sign, 'timestamp': time_param, 'aid': 'sm5a70d9b0174909d3cdb1', 'asin': asin,
-    #           'countryCode': 'us'}
-    #
-    # query_list = [k + '=' + str(v) for k, v in params.items()]
-    # query_string = '&'.join(query_list)
-    #
-    # url = "https://xp.sellermotor.com/selection/index/big-data" + '?' + query_string
-
     # 挚哥的API
     headers = {
         'Authorization': 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJhdWQiOiJzbWRhdGEiLCJyb2xlIjoiMyIsImV4cCI6MTY3MjEzMzA4NCwidXNlcmlkIjoiMSIsInVzZXJuYW1lIjoiYWR2ZXJ0In0.kGjVZjatFkbdbScJn_LF87OD806CeRwAI4i27YxvgQ8'
     }
-    # url = 'http://44.232.246.239:8088/data/product/byAsin?site=1&asin={asin}'.format(asin=asin)
     url_dict = {
-        'us': 'http://52.82.24.19:8181/usdata/product/byAsin?site=1&asin={asin}'.format(asin=asin)
+        'us': 'http://52.82.24.19:8181/usdata/product/byAsin?site=1&asin={asin}'.format(asin=asin),
+        'uk': 'https://api.sellermotor.com/v1/amazon/product/sqlquery2?site=2&sql=SELECT asin,title,s_about,price,rating,reviews from product_uk where asin = {asin}'.format(asin=asin),
+        'de': 'https://api.sellermotor.com/v1/amazon/product/sqlquery2?site=2&sql=SELECT asin,title,s_about,price,rating,reviews from product_de where asin = {asin}'.format(asin=asin),
+        'fr': 'https://api.sellermotor.com/v1/amazon/product/sqlquery2?site=2&sql=SELECT asin,title,s_about,price,rating,reviews from product_fr where asin = {asin}'.format(asin=asin),
     }
-    # url = 'http://52.82.24.19:8181/usdata/product/byAsin?site=1&asin={asin}'.format(asin=asin)
 
     # request & get result dict
     url = url_dict[country]
     res = requests.get(url, headers=headers)
-    # request & get result dict
-    # res = requests.get(url)
 
     result_dict = res.json()
-    # try:
-    #     result_dict['data'][0]
-    # except IndexError as e:
-    #     result_dict['data'].append({'asin': asin, 'title': '', 's_about': '', 'price': '', 'rating': '', 'reviews': 0})
 
     if not result_dict['data']:
         result_dict['data'] = dict()

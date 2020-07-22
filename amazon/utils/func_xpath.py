@@ -101,7 +101,7 @@ def get_us_price(product):
 
 def get_de_price(product):
     try:
-        price = float(product.xpath('.//span[@class="a-price-whole"]/text()').extract_first().replace(',', '.').replace('.', ''))
+        price = float(product.xpath('.//span[@class="a-price-whole"]/text()').extract_first().replace(',', '.'))
     except:
         try:
             price = float(product.xpath('div/span/div/div/div[contains(@class, "a-spacing-top-mini")]/div/span[@dir="auto" and @class="a-color-base"]/text()').extract_first('').replace(',', '.').replace('.', '').replace('€', ''))
