@@ -121,13 +121,15 @@ ITEM_PIPELINES = {
 # Ensure all spiders share same duplicates filter through redis.
 # DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
-# MYSQL_HOST = 'localhost'
-MYSQL_HOST ='52.82.28.224'
-MYSQL_DATABASE = 'test'
+# MYSQL_HOST ='52.82.28.224'
+MYSQL_HOST ='sm-msd-adverting.cgoi5uvtkxx1.rds.cn-northwest-1.amazonaws.com.cn'
+# MYSQL_DATABASE = 'test'
+MYSQL_DATABASE = 'adverting'
 MYSQL_PORT = 3306
-MYSQL_USER = 'root'
-# MYSQL_PASSWORD = 'zz6901877'
-MYSQL_PASSWORD = 'sellermotor'
+# MYSQL_USER = 'root'
+MYSQL_USER = 'msd-admin'
+# MYSQL_PASSWORD = 'sellermotor'
+MYSQL_PASSWORD = 'DJH7chBi30a4oLed'
 
 
 country_query_url_dict = {'us': 'https://www.amazon.com/s?', 'uk': 'https://www.amazon.co.uk/s?', 'de': 'https://www.amazon.de/s?',
