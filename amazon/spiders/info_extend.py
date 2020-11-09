@@ -14,16 +14,8 @@ from amazon.utils.func import get_url
 class InfoExtendSpider(scrapy.Spider):
     name = 'search_info'
 
-    # amazon_url = 'https://www.amazon.com/'
-    # base_url = 'https://www.amazon.com/s?k='
-    # allowed_domains = ['www.amazon.com']
-
-    def __init__(self, country='us', search_term='king_waterproof_mattress_pad', pages=3, category='king_waterproof_mattress_pad', **kwargs):
+    def __init__(self, search_term, category, country='us',  pages=3,  **kwargs):
         super().__init__(**kwargs)
-        # search_term = search_term.replace('_', '+')
-        # url = self.base_url + search_term + '&page='
-        # urls = [url + str(page) + '&qid=' + str(round(time())) + '&ref=sr_pg_' + str(page) for page in range(1, pages+1)]
-
         # 模拟签名，伪造search_url
         urls = [get_url(country, search_term, page) for page in range(1, int(pages)+1)]
         self.start_urls = urls

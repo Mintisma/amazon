@@ -5,3 +5,6 @@ aiohttp
 requests
 pymysql
 fake-useragent
+pandas
+numpy
+matplotlib
